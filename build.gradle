@@ -6,7 +6,6 @@ plugins {
 }
 
 
-sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 sourceSets {
@@ -26,7 +25,6 @@ clean {
 
 
 
-
 jar {
     manifest {
         attributes 'Implementation-Title': project.name,
@@ -36,6 +34,12 @@ jar {
 
 }
 
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 dependencies {
     implementation 'com.google.guava:guava:33.4.8-jre',           // Google guava
