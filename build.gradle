@@ -29,7 +29,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version,
-                'Main-Class': 'nrlssc.copyright.AddCopyright'
+                'Main-Class': 'nrlssc.legal.AddLegalHeader'
     }
 
 }
@@ -58,15 +58,15 @@ artifacts {
 
 gradlePlugin {
     website = 'https://geoint.nrlssc.org/'
-    vcsUrl = 'https://github.com/seanrl/add-copyright.git'
+    vcsUrl = 'https://github.com/seanrl/add-legal-header.git'
     //noinspection GroovyAssignabilityCheck
     plugins {
         copyrightLib {
             tags = ['copyright']
-            id = 'nrlssc.add-copyright'
-            displayName = 'add-copyright'
+            id = 'nrlssc.add-legal-header'
+            displayName = 'add-legal-header'
             description = 'This is not a plugin, just a library needed for other nrlssc plugins'
-            implementationClass = 'nrlssc.copyright.AddCopyright'
+            implementationClass = 'nrlssc.legal.AddLegalHeader'
         }
     }
 }

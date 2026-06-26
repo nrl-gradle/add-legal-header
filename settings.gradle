@@ -1,0 +1,5 @@
+plugins {
+    id 'nrlssc.projects' version '5.0.19'
+}
+rootProject.name = 'add-legal-header'
+
