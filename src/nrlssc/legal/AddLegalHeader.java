@@ -1,4 +1,4 @@
-package nrlssc.copyright;
+package nrlssc.legal;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -19,8 +19,6 @@ import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
 /**
  * Adds an initial bit of text (the NRL source code disclosure text) to all Java source files in the given folder(s). The copyright text is versioned and marked by a special
  * sequence of characters in the first line. If the version number is updated, this code will replace the existing text with the new text. If the first lines are the same, then no
@@ -29,9 +27,9 @@ import com.google.common.collect.Lists;
  * The use of the word copyright is a misnomer, as Scott Bell informed me (Richard Owens). Use of this term in this project is not meant to imply an actual copyright.
  *
  */
-public class AddCopyright {
+public class AddLegalHeader {
 
-    private static final Logger logger = LoggerFactory.getLogger(AddCopyright.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddLegalHeader.class);
 
     private static final class MySimpleFileVisitor extends SimpleFileVisitor<Path> {
 
@@ -43,11 +41,15 @@ public class AddCopyright {
 
         private final List<String> copyrightLines;
 
-        private MySimpleFileVisitor() throws IOException {
+        private MySimpleFileVisitor(String legalVersion, String poc, String sectionCode) throws IOException {
             InputStream stream = Resources.getResource("nrlssc/copyright/nrl-disclaimer-java.txt").openStream();
             copyrightLines =
                     new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
             stream.close();
+
+            for(int i = 0; i < copyrightLines.size(); i++) {
+                copyrightLines.set(i, copyrightLines.get(i).replaceAll("\\[LEGAL_VERSION\\]", legalVersion).replaceAll("\\[NRL_SECTION_CODE\\]", sectionCode).replaceAll("\\[NRL_POC\\]", poc));
+            }
         }
 
         @Override
@@ -62,7 +64,7 @@ public class AddCopyright {
                     // We already have the correct copyright text in the file -- do nothing.
                     logger.info("Copyright was present in file {}", path);
                     filesWithCorrectCopyrightVersion++;
-                } else if (javaFilesLines.get(0).startsWith("/*********************** -- NRL ")) {
+                } else if (javaFilesLines.get(0).startsWith(copyrightLines.get(0))) {
                     // Have a copyright header, but wrong verion. Replace.
                     String tempFilename = path.toString() + ".zzz";
                     Path tempFile = Paths.get(tempFilename);
@@ -117,14 +119,31 @@ public class AddCopyright {
             System.exit(1);
         }
 
+        AddLegalHeader al = new AddLegalHeader();
         for (String dirName : args) {
-            if((new File(dirName)).exists()) addCopyright(dirName);
+            if((new File(dirName)).exists()) al.addCopyright(dirName);
         }
 
     }
 
-    private static void addCopyright(String dirName) throws IOException {
-        MySimpleFileVisitor fileVisitor = new MySimpleFileVisitor();
+    private String legalVersion = "1.1";
+    private String poc = "Naval Research Laboratory";
+    private String branchCode = "7340";
+    public AddLegalHeader(String legalVersion, String POC, String branchCode){
+        this.legalVersion = legalVersion;
+        this.poc = POC;
+        this.branchCode = branchCode;
+    }
+    public AddLegalHeader(){}
+
+    public void addCopyright(String[] dirs) throws IOException {
+        for (String dirName : dirs) {
+            if((new File(dirName)).exists()) addCopyright(dirName);
+        }
+    }
+
+    private void addCopyright(String dirName) throws IOException {
+        MySimpleFileVisitor fileVisitor = new MySimpleFileVisitor(legalVersion, poc, branchCode);
 
         Files.walkFileTree(Paths.get(dirName), fileVisitor);
         logger.info("Files updated: {}", fileVisitor.getFilesModified());

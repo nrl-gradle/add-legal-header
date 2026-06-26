@@ -1,5 +1,29 @@
-/*********************** -- NRL 1.0 -- ***********************************
- * 
+/******************************** -- NRL [LEGAL_VERSION] -- ***********************************
+ ********************************* CUI//SP-CTI ************************************
+ * =============================================================================
+ * CONTROLLED UNCLASSIFIED INFORMATION // SPECIFIED - TECHNICAL INFORMATION
+ * =============================================================================
+ * CUI//SP-CTI
+ *
+ * DESIGNATION INDICATOR:
+ * Controlled by: Department of the Navy
+ * Controlled by: U.S. Naval Research Laboratory (NRL), Code [NRL_SECTION_CODE]
+ * CUI Category: CUI//SP-CTI
+ * Distribution Statement: Distribution Statement D
+ * POC: [NRL_POC]
+ *
+ * PATENT & LICENSE NOTICE:
+ * This software is a Work of the United States Government and implements
+ * technology patented by the Department of the Navy.
+ *
+ * Where applicable, please refer to the LICENSE.txt file located in the
+ * root directory of this project.
+ *
+ * =============================================================================
+ * CUI//SP-CTI
+ * =============================================================================
+ *
+ *
  * NAVAL RESEARCH LABORATORY PROPRIETARY SOURCE CODE
  * __________________
  * 
